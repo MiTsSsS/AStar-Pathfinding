@@ -1,2 +1,1 @@
-# Strategy Game
- A strategy game made with Unity.
+# Work in Progress
