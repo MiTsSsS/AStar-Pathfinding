@@ -5,26 +5,39 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour {
-    [SerializeField]
-    int width, height = 0;
+    [SerializeField] int width, height = 0;
 
-    [SerializeField]
-    private Tile tile;
+    [SerializeField] private Tile tile;
 
-    [SerializeField]
-    private Transform cam;
+    [SerializeField] private Transform cam;
+
+    private Dictionary<Vector2, Tile> tiles;
 
     private void Start() {
         generateGrid();
     }
 
     void generateGrid() {
-        for(int i = 0; i < width; i++) {
-            for(int j = 0; j < height; j++) {
+        tiles = new Dictionary<Vector2, Tile>();
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 var spawnedTile = Instantiate(tile, new Vector3(i, j), Quaternion.identity);
                 spawnedTile.name = $"Tile {i}, {j}";
-                spawnedTile.setTileColor((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0) ? true : false);
+                spawnedTile.setTileColor(((i + j) % 2 == 1) ? true : false);
+                spawnedTile.xGridPosition = i;
+                spawnedTile.yGridPosition = j;
+
+                tiles[new Vector2(i, j)] = spawnedTile;
             }
         }
+    }
+
+    public Tile getTileAtPosition(Vector2 position) {
+        if (tiles.TryGetValue(position, out var tile)) {
+            return tiles[position];
+        } 
+        
+        return null;
     }
 }
