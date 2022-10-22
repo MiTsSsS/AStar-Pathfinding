@@ -13,6 +13,12 @@ public class GridManager : MonoBehaviour {
 
     private Dictionary<Vector2, Tile> tiles;
 
+    public static GridManager instance;
+
+    private void Awake() {
+        instance = this;
+    }
+
     private void Start() {
         generateGrid();
     }
@@ -39,5 +45,9 @@ public class GridManager : MonoBehaviour {
         } 
         
         return null;
+    }
+
+    public Tile getRandomTile() {
+        return tiles[new Vector2(Random.Range(0, 16), Random.Range(0, 9))];
     }
 }

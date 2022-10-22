@@ -10,6 +10,8 @@ public class Tile : MonoBehaviour {
 
     [SerializeField] private GameObject tileHighlight;
 
+    public BaseUnit occupyingUnit;
+
     public int xGridPosition, yGridPosition;
 
     public void setTileColor(bool isOffset) {
@@ -26,5 +28,14 @@ public class Tile : MonoBehaviour {
 
     private void OnMouseDown() {
         Debug.Log(xGridPosition + ", " + yGridPosition);
+    }
+
+    public void setUnitOnTile(BaseUnit unit) {
+        if (unit.occupiedTile != null)
+            unit.occupiedTile.occupyingUnit = null;
+
+        unit.transform.position = transform.position;
+        occupyingUnit = unit;
+        unit.occupiedTile = this;
     }
 }
