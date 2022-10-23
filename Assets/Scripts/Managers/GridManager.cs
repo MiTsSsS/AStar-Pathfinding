@@ -6,24 +6,16 @@ using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour {
     [SerializeField] int width, height = 0;
-
     [SerializeField] private Tile tile;
-
     [SerializeField] private Transform cam;
-
     private Dictionary<Vector2, Tile> tiles;
-
     public static GridManager instance;
 
     private void Awake() {
         instance = this;
     }
 
-    private void Start() {
-        generateGrid();
-    }
-
-    void generateGrid() {
+    public void generateGrid() {
         tiles = new Dictionary<Vector2, Tile>();
 
         for (int i = 0; i < width; i++) {
@@ -37,17 +29,29 @@ public class GridManager : MonoBehaviour {
                 tiles[new Vector2(i, j)] = spawnedTile;
             }
         }
+
+        GameManager.instance.changeState(GameState.SpawnCharacters);
     }
 
     public Tile getTileAtPosition(Vector2 position) {
         if (tiles.TryGetValue(position, out var tile)) {
             return tiles[position];
-        } 
+        }
         
         return null;
     }
 
     public Tile getRandomTile() {
-        return tiles[new Vector2(Random.Range(0, 16), Random.Range(0, 9))];
+        Tile randomTile = tiles[new Vector2(Random.Range(0, 17), Random.Range(0, 10))];
+        Tile finalTile = null;
+
+        if (randomTile.occupyingUnit == null) {
+            finalTile = randomTile;
+        } else {
+            Debug.Log("Chosen same tile");
+            getRandomTile();
+        }
+
+        return finalTile;
     }
 }

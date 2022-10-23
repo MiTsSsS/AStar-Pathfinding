@@ -28,6 +28,15 @@ public class Tile : MonoBehaviour {
 
     private void OnMouseDown() {
         Debug.Log(xGridPosition + ", " + yGridPosition);
+
+        if (GameManager.instance.gameState != GameState.PlayerTurn)
+            return;
+
+        if(occupyingUnit != null) {
+            if(occupyingUnit.faction == Faction.Player) {
+                UnitManager.instance.setSelectedUnit(occupyingUnit);
+            }
+        }
     }
 
     public void setUnitOnTile(BaseUnit unit) {
