@@ -37,12 +37,12 @@ public class GridManager : MonoBehaviour {
         if (tiles.TryGetValue(position, out var tile)) {
             return tiles[position];
         }
-        
+
         return null;
     }
 
     public Tile getRandomTile() {
-        Tile randomTile = tiles[new Vector2(Random.Range(0, 17), Random.Range(0, 10))];
+        Tile randomTile = tiles[new Vector2(Random.Range(0, 16), Random.Range(0, 9))];
         Tile finalTile = null;
 
         if (randomTile.occupyingUnit == null) {
@@ -53,5 +53,18 @@ public class GridManager : MonoBehaviour {
         }
 
         return finalTile;
+    }
+
+    public void getTilesInUnitRange(BaseUnit unit) {
+        int minHorizontalRange = unit.attackRange.leftRange;
+        int maxHorizontalRange = unit.attackRange.rightRange;
+        int minVerticalRange = unit.attackRange.downwardRange;
+        int maxVerticalRange = unit.attackRange.upwardRange;
+
+        for (int mhr = minHorizontalRange; mhr <= maxHorizontalRange; mhr++) {
+            for (int mvr = minVerticalRange; mvr <= maxVerticalRange; mvr++) {
+
+            }
+        }
     }
 }

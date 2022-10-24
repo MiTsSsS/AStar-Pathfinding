@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
     [SerializeField] private Color color, offsetColor;
-
     [SerializeField] private SpriteRenderer rend;
-
     [SerializeField] private GameObject tileHighlight;
 
     public BaseUnit occupyingUnit;
@@ -35,6 +33,17 @@ public class Tile : MonoBehaviour {
         if(occupyingUnit != null) {
             if(occupyingUnit.faction == Faction.Player) {
                 UnitManager.instance.setSelectedUnit(occupyingUnit);
+            } else {
+                if(UnitManager.instance.selectedUnit != null) {
+                    //Clicking on enemy while a friendly unit is selected
+                }
+            }
+        }
+
+        else {
+            if(UnitManager.instance.selectedUnit != null) {
+                setUnitOnTile(UnitManager.instance.selectedUnit);
+                UnitManager.instance.setSelectedUnit(null);
             }
         }
     }
