@@ -53,7 +53,8 @@ public class GridManager : MonoBehaviour {
 
         return finalTile;
     }
-
+    
+    //Attack range implementation
     public void getTilesInUnitRange(BaseUnit unit) {
         int minHorizontalRange = unit.attackRange.leftRange;
         int maxHorizontalRange = unit.attackRange.rightRange;
@@ -62,6 +63,7 @@ public class GridManager : MonoBehaviour {
 
         for (int mhr = minHorizontalRange; mhr <= maxHorizontalRange; mhr++) {
             for (int mvr = minVerticalRange; mvr <= maxVerticalRange; mvr++) {
+                //Iterating tiles in unit range to look for enemy character and other things
 
             }
         }

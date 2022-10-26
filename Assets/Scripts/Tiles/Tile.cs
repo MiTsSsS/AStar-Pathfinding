@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class Tile : MonoBehaviour {
     [SerializeField] private Color color, offsetColor;
     [SerializeField] private SpriteRenderer rend;
     [SerializeField] private GameObject tileHighlight;
+
+    public bool isWalkable;
     
     public BaseUnit occupyingUnit;
 
@@ -66,7 +69,19 @@ public class Tile : MonoBehaviour {
             new Vector2(1, 1), new Vector2(1, -1), new Vector2(-1, -1), new Vector2(-1, 1)
         };
 
-    public List<Tile> tileNeighboors;
+    public List<Tile> tileNeighboors { get; protected set; }
+    public Tile pathConnection { get; private set; }
+    public float G { get; private set; }
+    public float H { get; private set; }
+    public float F => G + H;
+
+    public void SetG(float g) {
+        G = g;
+    }
+
+    public void SetH(float h) {
+        H = h;
+    }
 
     public void cacheNeighboors() {
         tileNeighboors  = new List<Tile>();
