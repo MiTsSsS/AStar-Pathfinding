@@ -23,8 +23,7 @@ public class GridManager : MonoBehaviour {
                 var spawnedTile = Instantiate(tile, new Vector3(i, j), Quaternion.identity);
                 spawnedTile.name = $"Tile {i}, {j}";
                 spawnedTile.setTileColor(((i + j) % 2 == 1) ? true : false);
-                spawnedTile.xGridPosition = i;
-                spawnedTile.yGridPosition = j;
+                spawnedTile.tilePosition = new Vector2Int(i, j);
 
                 tiles[new Vector2(i, j)] = spawnedTile;
             }
