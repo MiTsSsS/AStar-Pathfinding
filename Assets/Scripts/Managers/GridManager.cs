@@ -11,6 +11,10 @@ public class GridManager : MonoBehaviour {
     private Dictionary<Vector2, Tile> tiles;
     public static GridManager instance;
 
+    //Pathfinding
+    private Tile goalTile;
+    public List<Tile> path;
+
     private void Awake() {
         instance = this;
     }
@@ -22,18 +26,24 @@ public class GridManager : MonoBehaviour {
             for (int j = 0; j < height; j++) {
                 var spawnedTile = Instantiate(tile, new Vector3(i, j), Quaternion.identity);
                 spawnedTile.name = $"Tile {i}, {j}";
-                spawnedTile.setTileColor(((i + j) % 2 == 1) ? true : false);
+                spawnedTile.setTileColor(((i + j) % 2 == 1));
                 spawnedTile.tilePosition = new Vector2Int(i, j);
 
                 tiles[new Vector2(i, j)] = spawnedTile;
             }
         }
 
+        foreach (Tile tile in tiles.Values) {
+            tile.cacheNeighboors();
+        }
+
+        Tile.OnHoverTile += OnTileHover;
+
         GameManager.instance.changeState(GameState.SpawnCharacters);
     }
 
     public Tile getTileAtPosition(Vector2 position) {
-        if (tiles.TryGetValue(position, out var tile)) {
+        if (tiles.TryGetValue(position, out _)) {
             return tiles[position];
         }
 
@@ -53,7 +63,7 @@ public class GridManager : MonoBehaviour {
 
         return finalTile;
     }
-    
+
     //Attack range implementation
     public void getTilesInUnitRange(BaseUnit unit) {
         int minHorizontalRange = unit.attackRange.leftRange;
@@ -65,6 +75,33 @@ public class GridManager : MonoBehaviour {
             for (int mvr = minVerticalRange; mvr <= maxVerticalRange; mvr++) {
                 //Iterating tiles in unit range to look for enemy character and other things
 
+            }
+        }
+    }
+
+    //Pathfinding
+
+    private void OnTileHover(Tile tile) {
+        goalTile = tile;
+
+        foreach (var t in tiles.Values) 
+            t.RevertTile();
+
+        if (UnitManager.instance.selectedUnit != null) {
+            path = Pathfinding.findPath(UnitManager.instance.selectedUnit.occupiedTile, goalTile);
+        }
+    }
+
+    private void OnDrawGizmos() {
+        if (!Application.isPlaying) return;
+        Gizmos.color = Color.yellow;
+
+        if(tiles.Count > 0) {
+            foreach (var tile in tiles) {
+                if (tile.Value.pathConnection == null) {
+                    continue;
+                }
+                Gizmos.DrawLine((Vector3)tile.Key + new Vector3(0, 0, -1), (Vector3)tile.Value.pathConnection.tilePosition + new Vector3(0, 0, -1));
             }
         }
     }

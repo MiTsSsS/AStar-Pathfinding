@@ -3,26 +3,53 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
+using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour {
-    [SerializeField] private Color color, offsetColor;
+    [SerializeField] private Color color, offsetColor, defaultColor, obstacleColor;
+    public Color openedColor, closedColor, pathColor;
+    [SerializeField] Gradient walkableColor;
     [SerializeField] private SpriteRenderer rend;
     [SerializeField] private GameObject tileHighlight;
 
     public bool isWalkable;
+    public bool isSelected;
     
     public BaseUnit occupyingUnit;
 
-    public Vector2Int tilePosition;
+    public Vector2 tilePosition;
+
+    //Pathfinding
+
+    public static event Action<Tile> OnHoverTile;
+
+    //End Pathfinding
+
+    private void Update() {
+        if(!isWalkable) {
+            setColorForPath(Color.black);
+        }
+    }
 
     public void setTileColor(bool isOffset) {
         rend.color = isOffset ? offsetColor : color;
     }
 
+    public void setColorForPath(Color color) {
+        rend.color = color;
+    }
+
     private void OnMouseEnter() {
         tileHighlight.SetActive(true);
+
+        if (!isWalkable)
+            return;
+        OnHoverTile?.Invoke(this);
     }
 
     private void OnMouseExit() {
@@ -47,9 +74,20 @@ public class Tile : MonoBehaviour {
 
         else {
             if(UnitManager.instance.selectedUnit != null) {
-                setUnitOnTile(UnitManager.instance.selectedUnit);
+                List<Tile> path = GridManager.instance.path;
+                path.Reverse();
+
+                StartCoroutine(unitFollowPath(UnitManager.instance.selectedUnit, path));
+
                 UnitManager.instance.setSelectedUnit(null);
             }
+        }
+    }
+
+    IEnumerator unitFollowPath(BaseUnit unit, List<Tile> path) {
+        foreach (Tile tile in path) {
+            tile.setUnitOnTile(unit);
+            yield return new WaitForSeconds(.2f);
         }
     }
 
@@ -60,6 +98,10 @@ public class Tile : MonoBehaviour {
         unit.transform.position = transform.position;
         occupyingUnit = unit;
         unit.occupiedTile = this;
+    }
+
+    public void RevertTile() {
+        setTileColor(((tilePosition.x + tilePosition.y) % 2 == 1));
     }
 
     //Pathfinding
@@ -83,6 +125,10 @@ public class Tile : MonoBehaviour {
         H = h;
     }
 
+    public void setPathConnection(Tile connectedTile) {
+        pathConnection = connectedTile;
+    }
+
     public void cacheNeighboors() {
         tileNeighboors  = new List<Tile>();
 
@@ -92,12 +138,12 @@ public class Tile : MonoBehaviour {
     }
 
     public float getTravelDistance(Tile otherTile) {
-        Vector2Int distance = new Vector2Int(Mathf.Abs(tilePosition.x - otherTile.tilePosition.x), Mathf.Abs(tilePosition.y - otherTile.tilePosition.y));
+        Vector2 distance = new Vector2(Mathf.Abs(tilePosition.x - otherTile.tilePosition.x), Mathf.Abs(tilePosition.y - otherTile.tilePosition.y));
 
-        int highestValue = Mathf.Max(distance.x, distance.y);
-        int lowestValue = Mathf.Min(distance.x, distance.y);
+        var highestValue = Mathf.Max(distance.x, distance.y);
+        var lowestValue = Mathf.Min(distance.x, distance.y);
 
-        int requiredHorizontalMoves = highestValue - lowestValue;
+        var requiredHorizontalMoves = highestValue - lowestValue;
 
         return lowestValue * 14 + requiredHorizontalMoves * 10;
     }

@@ -185,8 +185,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 0.5019608, g: 1, b: 0.4009434, a: 1}
   offsetColor: {r: 0.27894935, g: 0.5471698, b: 0.22454612, a: 1}
+  defaultColor: {r: 0.5019608, g: 1, b: 0.40000004, a: 0}
+  obstacleColor: {r: 0, g: 0, b: 0, a: 0}
+  openedColor: {r: 0, g: 0, b: 1, a: 0}
+  closedColor: {r: 0, g: 1, b: 0, a: 0}
+  pathColor: {r: 1, g: 0, b: 0, a: 0}
+  walkableColor:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
   rend: {fileID: 6817149492371866096}
   tileHighlight: {fileID: 3168177720819687502}
+  isWalkable: 1
+  isSelected: 0
+  occupyingUnit: {fileID: 0}
+  tilePosition: {x: 0, y: 0}
 --- !u!61 &4037943778181887071
 BoxCollider2D:
   m_ObjectHideFlags: 0
