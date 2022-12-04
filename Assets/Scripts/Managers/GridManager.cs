@@ -39,7 +39,7 @@ public class GridManager : MonoBehaviour {
 
         Tile.OnHoverTile += OnTileHover;
 
-        GameManager.instance.changeState(GameState.SpawnCharacters);
+        GameManager.instance.changeState(GameManager.GameState.SpawnCharacters);
     }
 
     public Tile getTileAtPosition(Vector2 position) {
@@ -66,10 +66,10 @@ public class GridManager : MonoBehaviour {
 
     //Attack range implementation
     public void getTilesInUnitRange(BaseUnit unit) {
-        int minHorizontalRange = unit.attackRange.leftRange;
-        int maxHorizontalRange = unit.attackRange.rightRange;
-        int minVerticalRange = unit.attackRange.downwardRange;
-        int maxVerticalRange = unit.attackRange.upwardRange;
+        int minHorizontalRange = unit.unitStats.attackRange.leftRange;
+        int maxHorizontalRange = unit.unitStats.attackRange.rightRange;
+        int minVerticalRange = unit.unitStats.attackRange.downwardRange;
+        int maxVerticalRange = unit.unitStats.attackRange.upwardRange;
 
         for (int mhr = minHorizontalRange; mhr <= maxHorizontalRange; mhr++) {
             for (int mvr = minVerticalRange; mvr <= maxVerticalRange; mvr++) {

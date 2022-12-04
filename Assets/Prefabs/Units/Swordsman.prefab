@@ -97,7 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb03a25081190441abacb251d693084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faction: 0
-  hp: 0
-  swiftness: 0
+  unitStats: {fileID: 11400000, guid: f5d3943ed493f064494d31bb947a10ab, type: 2}
+  tilesInRange: []
   occupiedTile: {fileID: 0}

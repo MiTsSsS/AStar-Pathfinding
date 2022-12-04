@@ -2,18 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Xml.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
-using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour {
     [SerializeField] private Color color, offsetColor, defaultColor, obstacleColor;
-    public Color openedColor, closedColor, pathColor;
-    [SerializeField] Gradient walkableColor;
     [SerializeField] private SpriteRenderer rend;
     [SerializeField] private GameObject tileHighlight;
 
@@ -21,12 +13,12 @@ public class Tile : MonoBehaviour {
     public bool isSelected;
     
     public BaseUnit occupyingUnit;
-
     public Vector2 tilePosition;
 
     //Pathfinding
 
     public static event Action<Tile> OnHoverTile;
+    public Color openedColor, closedColor, pathColor;
 
     //End Pathfinding
 
@@ -59,19 +51,21 @@ public class Tile : MonoBehaviour {
     private void OnMouseDown() {
         Debug.Log(tilePosition.x + ", " + tilePosition.y);
 
-        if (GameManager.instance.gameState != GameState.PlayerTurn)
+        if (GameManager.instance.gameState != GameManager.GameState.PlayerTurn)
             return;
-
+            
         if(occupyingUnit != null) {
-            if(occupyingUnit.faction == Faction.Player) {
+            if (occupyingUnit.unitStats.faction == CustomUtility.Faction.Player) {
                 UnitManager.instance.setSelectedUnit(occupyingUnit);
-            } else {
+            }
+            
+            else {
                 if(UnitManager.instance.selectedUnit != null) {
                     //Clicking on enemy while a friendly unit is selected
                 }
             }
         }
-
+        
         else {
             if(UnitManager.instance.selectedUnit != null) {
                 List<Tile> path = GridManager.instance.path;

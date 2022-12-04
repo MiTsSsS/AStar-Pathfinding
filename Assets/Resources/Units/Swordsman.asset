@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: Swordsman
   m_EditorClassIdentifier: 
   unitPrefab: {fileID: 890468313957368350, guid: 62f84b176be7d784180858be4cd126b7, type: 3}
+  faction: 0
+  hasPlayedTurn: 0
+  hitpoints: 0
+  mana: 0
+  speed: 0

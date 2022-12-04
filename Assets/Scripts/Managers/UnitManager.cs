@@ -12,10 +12,13 @@ public class UnitManager : MonoBehaviour
         instance = this;
     }
 
-    public void spawnCharacter(Faction faction) {
+    public void spawnCharacter(CustomUtility.Faction faction) {
         var spawnedUnit = Instantiate(swordsman.unitPrefab);
-        spawnedUnit.GetComponent<SpriteRenderer>().color = faction == Faction.Player ? Color.yellow : Color.red;
-        spawnedUnit.faction = faction;
+
+        spawnedUnit.unitStats = new ScriptableUnit();
+        spawnedUnit.unitStats.faction = faction;
+        spawnedUnit.GetComponent<SpriteRenderer>().color = faction == CustomUtility.Faction.Player ? Color.yellow : Color.red;
+        spawnedUnit.unitStats.faction = faction;
 
         Tile randomTile = GridManager.instance.getRandomTile();
 

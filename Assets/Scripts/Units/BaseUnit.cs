@@ -4,36 +4,16 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class BaseUnit : MonoBehaviour {
-    public Faction faction;
-    
-    [SerializeField] private int hp;
-    
-    [SerializeField] private float swiftness;
-
+    public ScriptableUnit unitStats;
     [SerializeField] private List<Tile> tilesInRange;
-
-    public RangesInDirection attackRange;
-
     public Tile occupiedTile;
 
     public void initializeAttackRange(int up, int down, int left, int right) {
-        attackRange.upwardRange = up;
-        attackRange.downwardRange = down;
-        attackRange.leftRange = left;
-        attackRange.rightRange = right;
+        unitStats.attackRange.upwardRange = up;
+        unitStats.attackRange.downwardRange = down;
+        unitStats.attackRange.leftRange = left;
+        unitStats.attackRange.rightRange = right;
 
         GridManager.instance.getTilesInUnitRange(this);
     }
-}
-
-public enum Faction {
-    Player = 0,
-    Enemy = 1
-}
-
-public struct RangesInDirection {
-    public int upwardRange;
-    public int downwardRange;
-    public int leftRange;
-    public int rightRange;
 }
