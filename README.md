@@ -1,3 +1,6 @@
+![](https://img.shields.io/badge/-Unity-lightgrey?style=for-the-badge&logo=unity) 
+![](https://img.shields.io/badge/-C%20Sharp-%2303a9f4?style=for-the-badge&logo=csharp)
+
 # Introduction
   
 - This is an implementation of the A* Pathfinding algorithm in a grid based game in Unity.  
